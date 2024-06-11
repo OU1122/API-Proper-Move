@@ -22,8 +22,9 @@ export const register = async (req, res) => {
 
 		res.status(201).json({ message: "user created succesfully" });
 	} catch (err) {
-		console.log(err);
-		res.status(500).json({ message: "failed to create user" });
+		res.status(500).json({
+			message: "Username or Email is already being used.",
+		});
 	}
 };
 
@@ -36,13 +37,13 @@ export const login = async (req, res) => {
 			where: { username },
 		});
 		if (!user)
-			return res.status(401).json({ message: "invalid credentials" });
+			return res.status(401).json({ message: "Invalid Credentials" });
 		console.log(user);
 		// CHECK IF PW CORRECT
 
 		const isPasswordValid = await bcrypt.compare(password, user.password);
 		if (!isPasswordValid)
-			return res.status(401).json({ message: "invalid credentials" });
+			return res.status(401).json({ message: "Invalid Credentials" });
 
 		// GENERATE TOKEN & SEND
 		const age = 1000 * 60 * 60 * 24 * 7;
