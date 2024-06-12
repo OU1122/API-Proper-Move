@@ -3,6 +3,7 @@ import {
 	shouldBeAdmin,
 	shouldBeLoggedIn,
 } from "../controllers/test.controller.js";
+import { verifyToken } from "../lib/verifyToken.js";
 
 const router = express.Router();
 
