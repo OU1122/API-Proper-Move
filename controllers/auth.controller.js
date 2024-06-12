@@ -45,6 +45,9 @@ export const login = async (req, res) => {
 		if (!isPasswordValid)
 			return res.status(401).json({ message: "Invalid Credentials" });
 
+		// EXTRACT PW AND REST OF DATA
+		const { password: userPassword, ...userData } = user;
+
 		// GENERATE TOKEN & SEND
 		const age = 1000 * 60 * 60 * 24 * 7;
 		const token = jwt.sign(
@@ -59,7 +62,7 @@ export const login = async (req, res) => {
 			maxAge: age,
 		})
 			.status(200)
-			.json({ message: "login succesful" });
+			.json(userData);
 	} catch (err) {
 		console.log(err);
 		res.status(500).json({ message: "failed to login" });
