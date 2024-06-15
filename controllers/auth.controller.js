@@ -20,10 +20,10 @@ export const register = async (req, res) => {
 		});
 		console.log(newUser);
 
-		res.status(201).json({ message: "user created succesfully" });
+		res.status(201).json({ message: "User created succesfully" });
 	} catch (err) {
 		res.status(500).json({
-			message: "Username or Email is already being used.",
+			message: "Username or email is already registered.",
 		});
 	}
 };
@@ -33,22 +33,26 @@ export const login = async (req, res) => {
 
 	try {
 		// CHECK IF EXISTS
+
 		const user = await prisma.user.findUnique({
 			where: { username },
 		});
 		if (!user)
 			return res.status(401).json({ message: "Invalid Credentials" });
 		console.log(user);
+
 		// CHECK IF PW CORRECT
 
 		const isPasswordValid = await bcrypt.compare(password, user.password);
 		if (!isPasswordValid)
 			return res.status(401).json({ message: "Invalid Credentials" });
 
-		// EXTRACT PW AND REST OF DATA
+		// EXTRACT PW AND REST OF USER DATA
+
 		const { password: userPassword, ...userData } = user;
 
 		// GENERATE TOKEN & SEND
+
 		const age = 1000 * 60 * 60 * 24 * 7;
 		const token = jwt.sign(
 			{
@@ -57,6 +61,8 @@ export const login = async (req, res) => {
 			process.env.JWT_SECRET_KEY,
 			{ expiresIn: age }
 		);
+		// SEND COOKIE & USER DATA
+
 		res.cookie("token", token, {
 			httpOnly: true,
 			maxAge: age,
@@ -65,7 +71,7 @@ export const login = async (req, res) => {
 			.json(userData);
 	} catch (err) {
 		console.log(err);
-		res.status(500).json({ message: "failed to login" });
+		res.status(500).json({ message: "Failed to login" });
 	}
 };
 export const logout = (req, res) => {
