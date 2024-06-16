@@ -1,5 +1,7 @@
 import prisma from "../lib/prisma.js";
 
+// GET ALL POSTS
+
 export const getPosts = async (req, res) => {
 	try {
 		const posts = await prisma.post.findMany();
@@ -13,11 +15,22 @@ export const getPosts = async (req, res) => {
 	}
 };
 
+// GET SINGLE POST (ID REQ)
+
 export const getPost = async (req, res) => {
 	const id = req.params.id;
 	try {
 		const post = await prisma.post.findUnique({
 			where: { id },
+			include: {
+				postDetail: true,
+				user: {
+					select: {
+						username: true,
+						avatar: true,
+					},
+				},
+			},
 		});
 
 		res.status(200).json(post);
@@ -28,6 +41,8 @@ export const getPost = async (req, res) => {
 		});
 	}
 };
+
+// ADD POST (MIDDLEWARE REQ)
 
 export const addPost = async (req, res) => {
 	const body = req.body;
@@ -52,6 +67,7 @@ export const addPost = async (req, res) => {
 		});
 	}
 };
+// UPDATE POST (ID REQ)
 
 export const updatePost = async (req, res) => {
 	try {
@@ -64,6 +80,8 @@ export const updatePost = async (req, res) => {
 		});
 	}
 };
+
+// DELETE SINGLE POST (ID REQ)
 
 export const deletePost = async (req, res) => {
 	const id = req.params.id;
