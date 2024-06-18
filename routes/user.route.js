@@ -12,7 +12,7 @@ import { verifyToken } from "../lib/verifyToken.js";
 
 const router = express.Router();
 
-router.get("/", verifyToken, getUsers);
+router.get("/", getUsers);
 //router.get("/:id", verifyToken, getUser);
 router.put("/:id", verifyToken, updateUser);
 router.delete("/:id", verifyToken, deleteUser);

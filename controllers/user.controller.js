@@ -16,7 +16,7 @@ export const getUsers = async (req, res) => {
 
 // GET USER
 
-export const getUser = async (req, res) => {
+/* export const getUser = async (req, res) => {
 	const userId = req.params.id;
 
 	console.log(userId);
@@ -30,7 +30,7 @@ export const getUser = async (req, res) => {
 		console.log(err);
 		res.status(500).json({ message: "Failed to get user" });
 	}
-};
+}; */
 
 // UPDATE USER
 
@@ -131,7 +131,7 @@ export const profilePosts = async (req, res) => {
 	const tokenUserId = req.userId;
 
 	try {
-		/* const userPosts = await prisma.post.findMany({
+		const userPosts = await prisma.post.findMany({
 			where: { userId: tokenUserId },
 		});
 		const saved = await prisma.savedPost.findMany({
@@ -139,7 +139,7 @@ export const profilePosts = async (req, res) => {
 			include: { post: true },
 		});
 
-		const savedPosts = saved.map((item) => item.post); */
+		const savedPosts = saved.map((item) => item.post);
 
 		res.status(200).json({ message: "success" });
 	} catch (err) {
