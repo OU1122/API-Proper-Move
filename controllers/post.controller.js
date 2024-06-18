@@ -1,4 +1,5 @@
 import prisma from "../lib/prisma.js";
+import jwt from "jsonwebtoken";
 
 // GET ALL POSTS
 
@@ -45,12 +46,30 @@ export const getPost = async (req, res) => {
 			},
 		});
 
-		res.status(200).json(post);
+		const token = req.cookies?.token;
+		let isSaved = false;
+
+		if (token) {
+			try {
+				const payload = jwt.verify(token, process.env.JWT_SECRET_KEY);
+				const saved = await prisma.savedPost.findUnique({
+					where: {
+						userId_postId: {
+							postId: id,
+							userId: payload.id,
+						},
+					},
+				});
+				isSaved = saved ? true : false;
+			} catch (err) {
+				console.error("JWT verification failed:", err);
+			}
+		}
+
+		res.status(200).json({ ...post, isSaved });
 	} catch (err) {
-		console.log(err);
-		res.status(500).json({
-			message: "Failed to get the post",
-		});
+		console.error(err);
+		res.status(500).json({ message: "Internal server error" });
 	}
 };
 
