@@ -7,7 +7,6 @@ export const register = async (req, res) => {
 	try {
 		// HASH PW
 		const hashedPassword = await bcrypt.hash(password, 10);
-		console.log(hashedPassword);
 
 		// CREATE USER IN DB
 
@@ -18,7 +17,6 @@ export const register = async (req, res) => {
 				password: hashedPassword,
 			},
 		});
-		console.log(newUser);
 
 		res.status(201).json({ message: "User created succesfully" });
 	} catch (err) {
@@ -39,7 +37,6 @@ export const login = async (req, res) => {
 		});
 		if (!user)
 			return res.status(401).json({ message: "Invalid Credentials" });
-		console.log(user);
 
 		// CHECK IF PW CORRECT
 
