@@ -16,5 +16,5 @@ app.use("/api/auth", authRoute);
 app.use("/api/user", userRoute);
 
 app.listen(8800, () => {
-	console.log("server is running");
+	console.log("server is running on port 8800");
 });
