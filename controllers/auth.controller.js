@@ -65,7 +65,7 @@ export const login = async (req, res) => {
 			maxAge: age,
 			secure: true,
 			sameSite: "Lax",
-			domain: ".netlify.app",
+			domain: ".proper-move.netlify.app",
 		})
 			.status(200)
 			.json(userData);
