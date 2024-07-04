@@ -65,6 +65,7 @@ export const login = async (req, res) => {
 			maxAge: age,
 			secure: true,
 			sameSite: "Lax",
+			domain: ".propermove.azurewebsites.net",
 		})
 			.status(200)
 			.json(userData);
